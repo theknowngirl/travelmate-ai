@@ -12,58 +12,13 @@ const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GOOGLE_GEMINI_AI_APIKE
  * Build the structured prompt for trip generation.
  */
 export const buildTripPrompt = ({ destination, days, budget, companion, companionCount, interests, mood }) => {
-  return `Generate a complete travel plan for the following preferences:
+  return `Create a travel plan. Return ONLY valid JSON, no markdown.
 
-Destination: ${destination}
-Duration: ${days} days
-Budget: ${budget} (Budget/Moderate/Luxury)
-Travelers: ${companion} (${companionCount} people)
-Interests: ${interests.join(', ')}
-Mood: ${mood || 'Curious'}
+Destination: ${destination}, Duration: ${days} days, Budget: ${budget}, Travelers: ${companion} (${companionCount}), Interests: ${interests.join(', ')}, Mood: ${mood || 'Curious'}
 
-Return ONLY a valid JSON object (no markdown, no explanation) with this exact structure:
-{
-  "tripInfo": {
-    "destination": "string",
-    "country": "string",
-    "bestTimeToVisit": "string",
-    "weatherInfo": "string",
-    "generalTips": ["tip1", "tip2", "tip3"]
-  },
-  "hotels": [
-    {
-      "hotelName": "string",
-      "address": "string",
-      "pricePerNight": "string",
-      "rating": 4.5,
-      "description": "string",
-      "geoCoordinates": {"lat": 0.0, "lng": 0.0}
-    }
-  ],
-  "itinerary": [
-    {
-      "day": 1,
-      "theme": "string (e.g. Arrival & City Exploration)",
-      "places": [
-        {
-          "placeName": "string",
-          "placeDetails": "string",
-          "timeToSpend": "string",
-          "ticketPrice": "string",
-          "geoCoordinates": {"lat": 0.0, "lng": 0.0},
-          "bestTimeToVisit": "string"
-        }
-      ]
-    }
-  ],
-  "budgetBreakdown": {
-    "accommodation": "string",
-    "activities": "string",
-    "food": "string",
-    "transport": "string",
-    "total": "string"
-  }
-}`;
+{"tripInfo":{"destination":"","country":"","bestTimeToVisit":"","weatherInfo":"","generalTips":[]},"hotels":[{"hotelName":"","address":"","pricePerNight":"","rating":4.5,"description":"","geoCoordinates":{"lat":0,"lng":0}}],"itinerary":[{"day":1,"theme":"","places":[{"placeName":"","placeDetails":"","timeToSpend":"","ticketPrice":"","geoCoordinates":{"lat":0,"lng":0},"bestTimeToVisit":""}]}],"budgetBreakdown":{"accommodation":"","activities":"","food":"","transport":"","total":""}}
+
+Return 3 hotels, ${days} itinerary days with 3-4 places each.`;
 };
 
 /**
@@ -92,10 +47,7 @@ export const generateTripPlan = async (tripParams) => {
 
 // ─── Chat ─────────────────────────────────────────────────────────────────────
 
-const CHAT_SYSTEM_CONTEXT = `You are TravelMate AI, a helpful and enthusiastic travel planning assistant. 
-Help users plan trips, suggest destinations, estimate budgets, recommend activities, 
-advise on packing, and answer any travel-related questions. 
-Be concise, friendly, and practical. Format lists with bullet points when appropriate.`;
+const CHAT_SYSTEM_CONTEXT = `You are TravelMate AI, a helpful travel planning assistant. Help users plan trips, suggest destinations, estimate budgets, recommend activities, and advise on packing. Be concise, friendly, and practical. Use bullet points for lists.`;
 
 /**
  * Send a chat message to Gemini with full conversation history.
@@ -104,28 +56,17 @@ Be concise, friendly, and practical. Format lists with bullet points when approp
  * @returns {string} AI response text
  */
 export const sendChatMessage = async (history, userMessage) => {
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+  const model = genAI.getGenerativeModel({
+    model: 'gemini-2.5-flash',
+    systemInstruction: CHAT_SYSTEM_CONTEXT,
+  });
 
-  // Build conversation with system context prepended to the first message
   const formattedHistory = history.map((msg) => ({
     role: msg.role,
     parts: [{ text: msg.text }],
   }));
 
-  const chat = model.startChat({
-    history: [
-      {
-        role: 'user',
-        parts: [{ text: CHAT_SYSTEM_CONTEXT }],
-      },
-      {
-        role: 'model',
-        parts: [{ text: "Understood! I'm TravelMate AI, ready to help you plan your perfect trip. What can I help you with today?" }],
-      },
-      ...formattedHistory,
-    ],
-  });
-
+  const chat = model.startChat({ history: formattedHistory });
   const result = await chat.sendMessage(userMessage);
   return result.response.text();
 };
@@ -139,7 +80,7 @@ export const sendChatMessage = async (history, userMessage) => {
 export const testGeminiConnection = async () => {
   try {
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
-    const result = await model.generateContent('Reply with just: ok');
+    const result = await model.generateContent('ok');
     return result.response.text().length > 0;
   } catch {
     return false;
