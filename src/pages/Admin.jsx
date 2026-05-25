@@ -325,7 +325,7 @@ export default function Admin() {
           <Card className="shadow-sm max-w-md">
             <CardContent className="p-5">
               <ApiStatusIndicator
-                label="Google Gemini AI (gemini-2.0-flash)"
+                label="Google Gemini AI (gemini-2.5-flash)"
                 status={apiStatus.gemini === 'loading' ? 'loading' : apiStatus.gemini}
               />
               <ApiStatusIndicator
