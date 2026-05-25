@@ -71,7 +71,7 @@ Return ONLY a valid JSON object (no markdown, no explanation) with this exact st
  * Returns the parsed JSON object or throws on error.
  */
 export const generateTripPlan = async (tripParams) => {
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
   const prompt = buildTripPrompt(tripParams);
 
   const result = await model.generateContent(prompt);
@@ -104,7 +104,7 @@ Be concise, friendly, and practical. Format lists with bullet points when approp
  * @returns {string} AI response text
  */
 export const sendChatMessage = async (history, userMessage) => {
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
   // Build conversation with system context prepended to the first message
   const formattedHistory = history.map((msg) => ({
@@ -138,7 +138,7 @@ export const sendChatMessage = async (history, userMessage) => {
  */
 export const testGeminiConnection = async () => {
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
     const result = await model.generateContent('Reply with just: ok');
     return result.response.text().length > 0;
   } catch {

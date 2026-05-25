@@ -191,7 +191,7 @@ export default function Chat() {
           </Button>
         </div>
         <p className="text-center text-xs text-gray-400 mt-2">
-          Powered by Google Gemini 1.5 Flash · Press Enter to send
+          Powered by Google Gemini 2.0 Flash · Press Enter to send
         </p>
       </div>
     </div>
