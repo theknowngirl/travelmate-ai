@@ -15,9 +15,9 @@ export default function PlaceCard({ place, imageUrl }) {
     : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.placeName)}`;
 
   return (
-    <div className="flex gap-4 p-4 bg-white rounded-xl border border-gray-100 hover:shadow-md transition-shadow group">
+    <div className="flex gap-3 sm:gap-4 p-3 sm:p-4 bg-white rounded-xl border border-gray-100 hover:shadow-md transition-shadow group">
       {/* Image */}
-      <div className="flex-shrink-0 w-24 h-24 rounded-lg overflow-hidden bg-gray-100">
+      <div className="flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-gray-100">
         <img
           src={img}
           alt={place.placeName}
@@ -29,7 +29,7 @@ export default function PlaceCard({ place, imageUrl }) {
       {/* Info */}
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-2">
-          <h4 className="font-semibold text-gray-900 text-sm truncate">{place.placeName}</h4>
+          <h4 className="font-semibold text-gray-900 text-sm leading-snug line-clamp-2 sm:truncate">{place.placeName}</h4>
           <a
             href={mapsUrl}
             target="_blank"
@@ -43,7 +43,7 @@ export default function PlaceCard({ place, imageUrl }) {
 
         <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">{place.placeDetails}</p>
 
-        <div className="flex flex-wrap gap-2 mt-2">
+        <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-2">
           {place.timeToSpend && (
             <span className="flex items-center gap-1 text-xs text-gray-500">
               <Clock className="w-3 h-3 text-[#0D9488]" />

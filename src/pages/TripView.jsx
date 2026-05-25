@@ -286,7 +286,7 @@ export default function TripView() {
             </div>
           </div>
           {hotels.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {hotels.map((hotel, idx) => (
                 <HotelCard
                   key={idx}
@@ -357,7 +357,7 @@ export default function TripView() {
                 <p className="text-sm text-gray-500">Estimated costs for your trip</p>
               </div>
             </div>
-            <Card className="shadow-sm max-w-md">
+            <Card className="shadow-sm max-w-xl">
               <CardContent className="p-6">
                 <BudgetRow icon={Hotel} label="Accommodation" value={budget.accommodation} iconColor="text-blue-500" />
                 <BudgetRow icon={Map} label="Activities" value={budget.activities} iconColor="text-[#0D9488]" />

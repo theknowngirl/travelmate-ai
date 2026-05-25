@@ -396,12 +396,12 @@ export default function CreateTrip() {
           </Card>
 
           {/* ─ Submit ─ */}
-          <div className="flex justify-end">
+          <div className="flex justify-center sm:justify-end">
             <Button
               type="submit"
               size="lg"
               disabled={loading}
-              className="px-10 py-3 text-base rounded-xl shadow-lg shadow-teal-200"
+              className="w-full sm:w-auto px-10 py-3 text-base rounded-xl shadow-lg shadow-teal-200"
             >
               {loading ? (
                 <>

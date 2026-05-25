@@ -61,3 +61,15 @@ html {
   animation: shimmer 1.5s infinite;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out both;
+}
+
+/* Use dvh for mobile viewports (falls back to vh) */
+.h-dvh { height: 100dvh; }
+.min-h-dvh { min-height: 100dvh; }
+

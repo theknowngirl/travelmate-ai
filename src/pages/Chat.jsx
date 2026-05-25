@@ -88,11 +88,11 @@ export default function Chat() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-64px)] bg-gray-50">
+    <div className="flex flex-col bg-gray-50" style={{ height: 'calc(100dvh - 64px)', minHeight: '0' }}>
       {/* ── Chat Header ── */}
-      <div className="bg-white border-b border-gray-100 px-4 sm:px-6 py-3 flex items-center justify-between shadow-sm">
+      <div className="bg-white border-b border-gray-100 px-4 sm:px-6 py-3 flex items-center justify-between shadow-sm flex-shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 bg-[#0D9488] rounded-full flex items-center justify-center">
+          <div className="w-9 h-9 bg-[#0D9488] rounded-full flex items-center justify-center flex-shrink-0">
             <Plane className="w-4 h-4 text-white" />
           </div>
           <div>
@@ -104,36 +104,36 @@ export default function Chat() {
           </div>
         </div>
         {messages.length > 0 && (
-          <Button variant="ghost" size="sm" onClick={clearChat} className="text-gray-400 hover:text-red-500">
+          <Button variant="ghost" size="sm" onClick={clearChat} className="text-gray-400 hover:text-red-500 flex-shrink-0">
             <Trash2 className="w-4 h-4" />
           </Button>
         )}
       </div>
 
       {/* ── Messages Area ── */}
-      <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-6">
+      <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 min-h-0">
         <div className="max-w-3xl mx-auto">
           {/* Empty state with starter prompts */}
           {messages.length === 0 && (
-            <div className="text-center py-12">
-              <div className="w-16 h-16 bg-teal-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                <MessageSquare className="w-8 h-8 text-[#0D9488]" />
+            <div className="text-center py-8 sm:py-12">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-teal-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <MessageSquare className="w-7 h-7 sm:w-8 sm:h-8 text-[#0D9488]" />
               </div>
-              <h2 className="text-xl font-bold text-gray-900 mb-2">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
                 Ask TravelMate AI anything
               </h2>
-              <p className="text-gray-500 text-sm mb-8">
+              <p className="text-gray-500 text-sm mb-6 sm:mb-8">
                 Get destination ideas, trip plans, packing tips, budget estimates, and more.
               </p>
 
               {/* Starter prompt chips */}
-              <div className="flex flex-wrap gap-2 justify-center">
+              <div className="flex flex-wrap gap-2 justify-center max-w-xl mx-auto">
                 {STARTER_PROMPTS.map((prompt) => (
                   <button
                     key={prompt}
                     onClick={() => sendMessage(prompt)}
                     disabled={isTyping}
-                    className="px-4 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-600 hover:border-[#0D9488] hover:text-[#0D9488] hover:bg-teal-50 transition-all cursor-pointer text-left"
+                    className="px-3 sm:px-4 py-1.5 sm:py-2 bg-white border border-gray-200 rounded-full text-xs sm:text-sm text-gray-600 hover:border-[#0D9488] hover:text-[#0D9488] hover:bg-teal-50 transition-all cursor-pointer text-left"
                   >
                     {prompt}
                   </button>
@@ -149,8 +149,8 @@ export default function Chat() {
 
           {/* Typing Indicator */}
           {isTyping && (
-            <div className="flex gap-3 mb-4">
-              <div className="w-8 h-8 rounded-full bg-[#0D9488] flex items-center justify-center flex-shrink-0">
+            <div className="flex gap-2.5 mb-4">
+              <div className="w-8 h-8 rounded-full bg-[#0D9488] flex items-center justify-center flex-shrink-0 self-end">
                 <Plane className="w-4 h-4 text-white" />
               </div>
               <div className="bg-white border border-gray-100 rounded-2xl rounded-tl-none px-4 py-3 shadow-sm">
@@ -171,26 +171,26 @@ export default function Chat() {
       </div>
 
       {/* ── Input Area ── */}
-      <div className="bg-white border-t border-gray-100 px-4 sm:px-6 py-4 shadow-lg">
-        <div className="max-w-3xl mx-auto flex gap-3 items-end">
+      <div className="bg-white border-t border-gray-100 px-4 sm:px-6 py-3 sm:py-4 flex-shrink-0">
+        <div className="max-w-3xl mx-auto flex gap-2 sm:gap-3 items-end">
           <Input
             ref={inputRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Ask about destinations, budgets, packing, or anything travel..."
-            className="flex-1 h-12 rounded-xl border-gray-200 focus:border-[#0D9488]"
+            placeholder="Ask about destinations, budgets, packing..."
+            className="flex-1 h-11 sm:h-12 rounded-xl border-gray-200 focus:border-[#0D9488] text-sm"
             disabled={isTyping}
           />
           <Button
             onClick={() => sendMessage()}
             disabled={!input.trim() || isTyping}
-            className="h-12 w-12 rounded-xl p-0 flex-shrink-0 shadow-md shadow-teal-100"
+            className="h-11 w-11 sm:h-12 sm:w-12 rounded-xl p-0 flex-shrink-0 shadow-md shadow-teal-100"
           >
             <Send className="w-4 h-4" />
           </Button>
         </div>
-        <p className="text-center text-xs text-gray-400 mt-2">
+        <p className="text-center text-xs text-gray-400 mt-2 hidden sm:block">
           Powered by Google Gemini 2.5 Flash · Press Enter to send
         </p>
       </div>
